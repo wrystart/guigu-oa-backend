@@ -34,7 +34,7 @@ public class SysUserController {
     public Result list(@PathVariable Long page,@PathVariable Long limit, SysUserQueryVo sysUserQueryVo) {
 
         //创建page对象
-        Page<SysUser> pageParam = new Page<>();
+        Page<SysUser> pageParam = new Page<>(page,limit);
         //封装条件，判断条件值不为空
         LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
         //获取条件值
