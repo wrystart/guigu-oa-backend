@@ -25,7 +25,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser sysUser = baseMapper.selectById(id);
 
         //设置修改状态值
-        sysUser.setStatus(0);
+        sysUser.setStatus(status);
 
         //调用方法进行修改
         baseMapper.updateById(sysUser);
