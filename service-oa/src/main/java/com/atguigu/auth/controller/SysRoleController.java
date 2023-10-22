@@ -3,13 +3,10 @@ package com.atguigu.auth.controller;
 import com.atguigu.auth.service.SysRoleService;
 import com.atguigu.common.result.Result;
 import com.atguigu.model.system.SysRole;
-import com.atguigu.model.system.SysUserRole;
-import com.atguigu.vo.system.AssginRoleVo;
+import com.atguigu.vo.system.AssignRoleVo;
 import com.atguigu.vo.system.SysRoleQueryVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,8 +43,8 @@ public class SysRoleController {
     //2 为用户分配角色
     @ApiOperation("为用户分配角色")
     @PostMapping("/doAssign")
-    public Result doAssign(@RequestBody AssginRoleVo assginRoleVo){
-        sysRoleService.doAssign(assginRoleVo);
+    public Result doAssign(@RequestBody AssignRoleVo assignRoleVo){
+        sysRoleService.doAssign(assignRoleVo);
         return Result.ok();
     }
 

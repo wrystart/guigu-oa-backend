@@ -4,12 +4,10 @@ import com.atguigu.auth.mapper.SysRoleMapper;
 import com.atguigu.auth.service.SysRoleService;
 import com.atguigu.auth.service.SysUserRoleService;
 import com.atguigu.model.system.SysRole;
-import com.atguigu.model.system.SysUser;
 import com.atguigu.model.system.SysUserRole;
-import com.atguigu.vo.system.AssginRoleVo;
+import com.atguigu.vo.system.AssignRoleVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -64,21 +62,21 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     //2 为用户分配角色
     @Override
-    public void doAssign(AssginRoleVo assginRoleVo) {
+    public void doAssign(AssignRoleVo assignRoleVo) {
         //把用户之前分配的角色数据删除，用户角色关系表里面，根据userid删除
         LambdaQueryWrapper<SysUserRole> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(SysUserRole::getUserId,assginRoleVo.getUserId());
+        wrapper.eq(SysUserRole::getUserId, assignRoleVo.getUserId());
         sysUserRoleService.remove(wrapper);
 
         //重新进行分配
-        List<Long> roleIdList = assginRoleVo.getRoleIdList();
+        List<Long> roleIdList = assignRoleVo.getRoleIdList();
         System.out.println(roleIdList);
         for (Long roleId : roleIdList) {
             if (StringUtils.isEmpty(roleId)) {
                 continue; //跳出当前(本次)循环，进行下一次循环
             }
             SysUserRole sysUserRole = new SysUserRole();
-            sysUserRole.setUserId(assginRoleVo.getUserId());
+            sysUserRole.setUserId(assignRoleVo.getUserId());
             sysUserRole.setRoleId(roleId);
             sysUserRoleService.save(sysUserRole);
         }

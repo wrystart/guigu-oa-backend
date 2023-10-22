@@ -4,7 +4,7 @@ package com.atguigu.auth.controller;
 import com.atguigu.auth.service.SysMenuService;
 import com.atguigu.common.result.Result;
 import com.atguigu.model.system.SysMenu;
-import com.baomidou.mybatisplus.extension.api.R;
+import com.atguigu.vo.system.AssignMenuVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +27,22 @@ public class SysMenuController {
 
     @Autowired
     private SysMenuService sysMenuService;
+
+    //查询所有菜单和角色分配的菜单
+    @ApiOperation("查询所有菜单和角色分配的菜单")
+    @GetMapping("toAssign/{roleId}")
+    public Result toAssign(@PathVariable Long roleId) {
+        List<SysMenu> list = sysMenuService.findMenuByRoleId(roleId);
+        return Result.ok(list);
+    }
+
+    //角色分配菜单
+    @ApiOperation("角色分配菜单")
+    @PostMapping("/doAssign")
+    public Result doAssign(@RequestBody AssignMenuVo assignMenuVo) {
+        sysMenuService.doAssign(assignMenuVo);
+        return Result.ok();
+    }
 
     //菜单列表
     @ApiOperation("菜单列表")
