@@ -28,6 +28,15 @@ public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
 
+    //根据用户id更改用户状态
+    @ApiOperation(value = "用户状态更新")
+    @GetMapping("updateStatus/{id}/{status}")
+    public Result updateStatus(@PathVariable Long id, @PathVariable Integer status) {
+        sysUserService.updateStatus(id,status);
+        return Result.ok();
+    }
+
+
     //用户列表-条件分页查询
     @ApiOperation("用户列表-条件分页查询")
     @GetMapping("/{page}/{limit}")
