@@ -1,4 +1,4 @@
-package com.atguigu.auth.code;
+package com.atguigu.code;
 
 
 import com.baomidou.mybatisplus.annotation.DbType;
