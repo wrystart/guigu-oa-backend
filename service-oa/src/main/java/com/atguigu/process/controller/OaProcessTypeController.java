@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @Description 审批类型管理
  * @Author Ruiyang Wang
@@ -23,6 +25,13 @@ public class OaProcessTypeController {
 
     @Autowired
     private OaProcessTypeService oaProcessTypeService;
+
+    @ApiOperation(value = "获取全部审批类型")
+    @GetMapping("findAll")
+    public Result findAll() {
+        List<ProcessType> list = oaProcessTypeService.list();
+        return Result.ok(list);
+    }
 
     @ApiOperation(value = "分页查询")
     @GetMapping("{page}/{limit}")
