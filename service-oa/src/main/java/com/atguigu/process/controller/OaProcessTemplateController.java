@@ -6,10 +6,19 @@ import com.atguigu.model.process.ProcessTemplate;
 import com.atguigu.process.service.OaProcessTemplateService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Description 审批模板管理
@@ -61,6 +70,50 @@ public class OaProcessTemplateController {
     @DeleteMapping("remove/{id}")
     public Result remove(@PathVariable Long id) {
         oaProcessTemplateService.removeById(id);
+        return Result.ok();
+    }
+
+    @ApiOperation(value = "上传流程定义")
+    @PostMapping("/uploadProcessDefinition")
+    public Result uploadProcessDefinition(MultipartFile file) throws FileNotFoundException {
+        //获取classes目录位置
+        String path = new File(ResourceUtils.getURL("classpath:").getPath()).getAbsolutePath();
+
+        // 设置上传目录
+        //当 Java 进行文件操作时，它会对路径中的特殊字符（比如空格）做URL编码
+        //由于文件目录中有空格，使用URLDecoder.decode进行解码
+        File tempFile = new File(URLDecoder.decode(path + "/processes/"));
+        // 判断目录是否存着
+        if (!tempFile.exists()) {
+            tempFile.mkdirs();//创建目录
+        }
+
+        // 创建空文件用于写入文件
+        String fileName = file.getOriginalFilename();
+        File zipFile = new File(URLDecoder.decode(path + "/processes/" + fileName));
+
+        // 保存文件流到本地
+        try {
+            file.transferTo(zipFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Result.fail("上传失败");
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        //根据上传地址后续部署流程定义，文件名称为流程定义的默认key
+        map.put("processDefinitionPath", "processes/" + fileName);
+        map.put("processDefinitionKey", fileName.substring(0, fileName.lastIndexOf(".")));
+        return Result.ok(map);
+    }
+
+    //部署流程定义(发布)
+    @ApiOperation(value = "发布")
+    @GetMapping("/publish/{id}")
+    public Result publish(@PathVariable Long id) {
+        //修改模板发布状态 1 已经发布
+        //流程定义部署
+        oaProcessTemplateService.publish(id);
         return Result.ok();
     }
 

@@ -17,4 +17,7 @@ public interface OaProcessTemplateService extends IService<ProcessTemplate> {
 
     //分页查询审批模板，把审批类型对应名称查询
     IPage<ProcessTemplate> selectPageProcessTemplate(Page<ProcessTemplate> pageParam);
+
+    //部署流程定义(发布)
+    void publish(Long id);
 }

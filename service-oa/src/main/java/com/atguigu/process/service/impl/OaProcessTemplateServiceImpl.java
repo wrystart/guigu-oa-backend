@@ -55,4 +55,17 @@ public class OaProcessTemplateServiceImpl extends ServiceImpl<OaProcessTemplateM
 
         return processTemplatePage;
     }
+
+    //部署流程定义(发布)
+    @Override
+    public void publish(Long id) {
+        //修改模板发布状态 1 已经发布
+        ProcessTemplate processTemplate = baseMapper.selectById(id);
+        processTemplate.setStatus(1);
+        baseMapper.updateById(processTemplate);
+
+        //TODO 后续完善，流程定义部署
+
+
+    }
 }
