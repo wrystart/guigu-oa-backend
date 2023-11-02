@@ -1,15 +1,14 @@
 package com.atguigu.process.controller.api;
 
 import com.atguigu.common.result.Result;
+import com.atguigu.model.process.ProcessTemplate;
 import com.atguigu.model.process.ProcessType;
+import com.atguigu.process.service.OaProcessTemplateService;
 import com.atguigu.process.service.OaProcessTypeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +26,16 @@ public class ProcessApiController {
 
     @Autowired
     private OaProcessTypeService oaProcessTypeService;
+
+    @Autowired
+    private OaProcessTemplateService oaProcessTemplateService;
+
+    @ApiOperation(value = "获取审批模板")
+    @GetMapping("getProcessTemplate/{processTemplateId}")
+    public Result get(@PathVariable Long processTemplateId) {
+        ProcessTemplate processTemplate = oaProcessTemplateService.getById(processTemplateId);
+        return Result.ok(processTemplate);
+    }
 
     @ApiOperation(value = "获取所有审批类型及对应审批模板")
     @GetMapping("findProcessType")
