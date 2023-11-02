@@ -19,4 +19,7 @@ public interface OaProcessService extends IService<Process> {
 
     //审批列表-条件分页查询
     IPage<ProcessVo> selectPage(Page<ProcessVo> pageParam, ProcessQueryVo processQueryVo);
+
+    //部署流程定义
+    void deployByZip(String deployPath);
 }
